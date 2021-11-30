@@ -18,36 +18,36 @@ const seed = (data) => {
     .then(() => {
       return db.query(
         `CREATE TABLE categories
-      (category_id VARCHAR(15) PRIMARY KEY,
-      description VARCHAR(255));`
+      (category_id VARCHAR(25) PRIMARY KEY,
+      description VARCHAR(255) NOT NULL);`
       );
     })
     .then(() => {
       return db.query(`CREATE TABLE users
-    (username VARCHAR(12) PRIMARY KEY,
-    avatar_url VARCHAR (155),
-    name VARCHAR(20))`);
+    (username VARCHAR(20) PRIMARY KEY,
+    avatar_url VARCHAR(155) NOT NULL,
+    name VARCHAR(20) NOT NULL)`);
     })
     .then(() => {
       return db.query(`CREATE TABLE reviews
     (review_id SERIAL PRIMARY KEY,
-    title VARCHAR(100),
-    review_body VARCHAR(1000),
-    designer VARCHAR(40),
-    review_img_url VARCHAR(250) DEFAULT 'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg',
-    votes INT DEFAULT 0,
-    category VARCHAR(40) REFERENCES categories(category_id),
-    owner VARCHAR(50) REFERENCES users(username),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);`);
+    title VARCHAR(100) NOT NULL,
+    review_body VARCHAR(1000) NOT NULL,
+    designer VARCHAR(40) NOT NULL,
+    review_img_url VARCHAR(250) DEFAULT 'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg' NOT NULL,
+    votes INT DEFAULT 0 NOT NULL,
+    category VARCHAR(40) REFERENCES categories(category_id) NOT NULL,
+    owner VARCHAR(50) REFERENCES users(username) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL);`);
     })
     .then(() => {
       return db.query(`CREATE TABLE comments
     (comment_id SERIAL PRIMARY KEY,
-    author VARCHAR(50) REFERENCES users(username),
-    review_id INT REFERENCES reviews(review_id),
-    votes INT DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    body VARCHAR(500))`);
+    author VARCHAR(50) REFERENCES users(username) NOT NULL,
+    review_id INT REFERENCES reviews(review_id) NOT NULL,
+    votes INT DEFAULT 0 NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    body VARCHAR(500) NOT NULL)`);
     })
     .then(() => {
       const queryStr = format(
