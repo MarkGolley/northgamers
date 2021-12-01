@@ -3,6 +3,7 @@ const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const request = require("supertest");
 const app = require("../app");
+const { string } = require("pg-format");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -265,6 +266,45 @@ describe("/api/reviews/:review_id/comments", () => {
             votes: 13,
           }
         );
+      });
+  });
+  it("status 200: returns with the added object for the comment that was added", () => {
+    return request(app)
+      .post("/api/reviews/2/comments")
+      .send({ username: "bainesface", body: "I really loved this game!" })
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comment.length).toBe(1);
+        expect(body.comment).toEqual(
+          expect.objectContaining([
+            {
+              author: "bainesface",
+              body: "I really loved this game!",
+              comment_id: 7,
+              created_at: expect.any(String),
+              review_id: 2,
+              votes: 0,
+            },
+          ])
+        );
+      });
+  });
+  it("status 400: returns an error if invalid username is provided", () => {
+    return request(app)
+      .post("/api/reviews/2/comments")
+      .send({ username: "markeywarkey", body: "I really loved this game!" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Sorry, username does not exist!" });
+      });
+  });
+  only("status 400: returns an error if empty post request made", () => {
+    return request(app)
+      .post("/api/reviews/2/comments")
+      .send({})
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Sorry, bad data entry!" });
       });
   });
   it("status 404: returns an error when an review_id doesn't exist", () => {

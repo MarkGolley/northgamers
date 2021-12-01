@@ -213,7 +213,7 @@ Responds with:
 
 ---
 
-NEXT - #### **POST /api/reviews/:review_id/comments**
+COMPLETE - #### **POST /api/reviews/:review_id/comments**
 
 Request body accepts:
 

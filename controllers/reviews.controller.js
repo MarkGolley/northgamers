@@ -1,8 +1,10 @@
+const { response, urlencoded } = require("express");
 const {
   selectReviewById,
   updateReviewById,
   fetchReviews,
   selectReviewCommentsById,
+  newCommentOnReviewById,
 } = require("../models/reviews.model");
 
 const {
@@ -69,6 +71,19 @@ exports.getReviewComments = (req, res, next) => {
   ])
     .then((comments) => {
       res.status(200).send({ comments: comments[1] });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.postCommentOnReviewById = (req, res, next) => {
+  console.log("in post comment to review controller");
+  const { review_id } = req.params;
+  const { body, username } = req.body;
+  newCommentOnReviewById(review_id, body, username)
+    .then((comment) => {
+      res.status(200).send({ comment: comment });
     })
     .catch((err) => {
       next(err);

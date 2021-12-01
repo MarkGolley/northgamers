@@ -114,3 +114,18 @@ exports.selectReviewCommentsById = (review_id) => {
       return response.rows;
     });
 };
+
+exports.newCommentOnReviewById = (review_id, body, username) => {
+  console.log("In new comment on review by id model");
+  return db
+    .query(
+      `INSERT INTO comments (author, body, review_id)
+  VALUES ($1,$2,$3)
+  RETURNING *;
+  `,
+      [username, body, parseInt(review_id)]
+    )
+    .then((response) => {
+      return response.rows;
+    });
+};
