@@ -129,7 +129,7 @@ All of your endpoints should send the responses specified below in an **object**
 
 ### Essential Routes
 
-#### **GET /api/categories**
+COMPLETE - #### **GET /api/categories**
 
 Responds with:
 
@@ -139,7 +139,7 @@ Responds with:
 
 ---
 
-#### **GET /api/reviews/:review_id**
+COMPLETE - #### **GET /api/reviews/:review_id**
 
 Responds with:
 
@@ -158,7 +158,7 @@ Responds with:
 
 ---
 
-#### **PATCH /api/reviews/:review_id**
+COMPLETE - #### **PATCH /api/reviews/:review_id**
 
 Request body accepts:
 
@@ -178,7 +178,7 @@ Responds with:
 
 ---
 
-#### **GET /api/reviews**
+NEXT - #### **GET /api/reviews**
 
 Responds with:
 
