@@ -3,7 +3,6 @@ const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const request = require("supertest");
 const app = require("../app");
-const { string } = require("pg-format");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -63,7 +62,7 @@ describe("/api/reviews/:review_id", () => {
       .get("/api/reviews/dogs")
       .expect(400)
       .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, review_id not a valid input!" });
+        expect(body).toEqual({ msg: "Sorry, id not a valid input!" });
       });
   });
   it("status 204: returns the updated review when a valid review is input via patch", () => {
@@ -230,7 +229,7 @@ describe("/api/reviews/?query", () => {
       .get("/api/reviews/dogs")
       .expect(400)
       .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, review_id not a valid input!" });
+        expect(body).toEqual({ msg: "Sorry, id not a valid input!" });
       });
   });
 });
@@ -295,16 +294,16 @@ describe("/api/reviews/:review_id/comments", () => {
       .send({ username: "markeywarkey", body: "I really loved this game!" })
       .expect(400)
       .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, username does not exist!" });
+        expect(body).toEqual({ msg: "Sorry, bad data!" });
       });
   });
-  only("status 400: returns an error if empty post request made", () => {
+  it("status 400: returns an error if empty post request made", () => {
     return request(app)
       .post("/api/reviews/2/comments")
       .send({})
       .expect(400)
       .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, bad data entry!" });
+        expect(body).toEqual({ msg: "Sorry, bad data!" });
       });
   });
   it("status 404: returns an error when an review_id doesn't exist", () => {
@@ -320,7 +319,21 @@ describe("/api/reviews/:review_id/comments", () => {
       .get("/api/reviews/dogs/comments")
       .expect(400)
       .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, review_id not a valid input!" });
+        expect(body).toEqual({ msg: "Sorry, id not a valid input!" });
+      });
+  });
+});
+
+describe("/api/comments/:comment_id", () => {
+  it("status 204: deletes a comment by comment Id", () => {
+    return request(app).delete("/api/comments/1").expect(204);
+  });
+  it("status 404: returns an error when an invalid comment format is input", () => {
+    return request(app)
+      .delete("/api/comments/dogs")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Sorry, id not a valid input!" });
       });
   });
 });

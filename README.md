@@ -227,7 +227,7 @@ Responds with:
 
 ---
 
-#### **DELETE /api/comments/:comment_id**
+COMPLETE - #### **DELETE /api/comments/:comment_id**
 
 Should:
 
@@ -239,7 +239,7 @@ Responds with:
 
 ---
 
-#### **GET /api**
+NEXT - #### **GET /api**
 
 Responds with:
 
