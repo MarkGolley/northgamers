@@ -178,7 +178,7 @@ Responds with:
 
 ---
 
-NEXT - #### **GET /api/reviews**
+COMPLETE - #### **GET /api/reviews**
 
 Responds with:
 
@@ -200,7 +200,7 @@ Should accept queries:
 
 ---
 
-#### **GET /api/reviews/:review_id/comments**
+COMPLETE - #### **GET /api/reviews/:review_id/comments**
 
 Responds with:
 
@@ -213,7 +213,7 @@ Responds with:
 
 ---
 
-#### **POST /api/reviews/:review_id/comments**
+NEXT - #### **POST /api/reviews/:review_id/comments**
 
 Request body accepts:
 

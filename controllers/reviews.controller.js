@@ -2,6 +2,7 @@ const {
   selectReviewById,
   updateReviewById,
   fetchReviews,
+  selectReviewCommentsById,
 } = require("../models/reviews.model");
 
 const {
@@ -29,7 +30,7 @@ exports.patchReviewById = (req, res, next) => {
 
   updateReviewById(review_id, body)
     .then((review) => {
-      res.status(200).send({ review });
+      res.status(200).send({ review: review });
     })
     .catch((err) => {
       next(err);
@@ -51,7 +52,23 @@ exports.getReviews = (req, res, next) => {
   }
   fetchReviews(sort_by, order_by, category)
     .then((reviews) => {
-      res.status(200).send({ reviews });
+      console.log(reviews);
+      res.status(200).send({ reviews: reviews });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.getReviewComments = (req, res, next) => {
+  console.log("In get review comments controller");
+  const { review_id } = req.params;
+  Promise.all([
+    checkIfReview_idExists(review_id),
+    selectReviewCommentsById(review_id),
+  ])
+    .then((comments) => {
+      res.status(200).send({ comments: comments[1] });
     })
     .catch((err) => {
       next(err);

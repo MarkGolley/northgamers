@@ -99,3 +99,18 @@ exports.fetchReviews = (sort_by, order_by, category) => {
     return response.rows;
   });
 };
+
+exports.selectReviewCommentsById = (review_id) => {
+  console.log("in model for review comments by ");
+  return db
+    .query(
+      `SELECT comment_id, votes, created_at, author, body
+  FROM comments
+  WHERE review_id = $1;
+  `,
+      [review_id]
+    )
+    .then((response) => {
+      return response.rows;
+    });
+};

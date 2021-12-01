@@ -12,7 +12,7 @@ exports.checkIfReview_idExists = (review_id) => {
       if (body.rows.length === 0) {
         return Promise.reject({
           status: 404,
-          msg: "Sorry, review_id not found",
+          msg: "Sorry, review_id not found!",
         });
       } else {
         return body.rows;
