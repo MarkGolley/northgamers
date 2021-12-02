@@ -2,7 +2,7 @@ const db = require("../db/connection.js");
 const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const request = require("supertest");
-const { app } = require("../app");
+const app = require("../app");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -339,7 +339,7 @@ describe("/api/comments/:comment_id", () => {
 });
 
 describe("/api", () => {
-  it.only("status 200: responds with the available endpoints", () => {
+  it("status 200: responds with the available endpoints", () => {
     return request(app)
       .get("/api")
       .expect(200)

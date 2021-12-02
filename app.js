@@ -24,4 +24,4 @@ app.use((err, req, res, next) => {
 
 //blank
 
-module.exports = { app };
+module.exports = app;
