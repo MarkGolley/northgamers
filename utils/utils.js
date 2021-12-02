@@ -21,7 +21,6 @@ exports.checkIfReview_idExists = (review_id) => {
 };
 
 exports.checkIfReview_idValid = (review_id) => {
-  console.log(typeof parseInt(review_id));
   if (typeof parseInt(review_id) !== "number") {
     return Promise.reject({
       status: 400,
@@ -53,7 +52,6 @@ exports.checkIfComment_idExists = (comment_id) => {
 };
 
 exports.checkIfComment_idValid = (comment_id) => {
-  console.log(typeof parseInt(comment_id));
   if (typeof parseInt(comment_id) !== "number") {
     return Promise.reject({
       status: 400,

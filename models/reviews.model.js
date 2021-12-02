@@ -1,9 +1,6 @@
-const { response } = require("express");
 const db = require("../db/connection");
-const { sort } = require("../db/data/test-data/categories");
 
 exports.selectReviewById = (review_id) => {
-  console.log("in model by id, for ID:", review_id);
   return db
     .query(
       `SELECT 
@@ -27,7 +24,6 @@ exports.selectReviewById = (review_id) => {
 };
 
 exports.updateReviewById = (review_id, body) => {
-  console.log(`in model for update review by ID:${review_id} with ${body}`);
   return db
     .query(
       `UPDATE reviews
@@ -42,15 +38,6 @@ exports.updateReviewById = (review_id, body) => {
 };
 
 exports.fetchReviews = (sort_by, order_by, category) => {
-  console.log(
-    "sort_by:",
-    sort_by,
-    "order_by:",
-    order_by,
-    "where category= :",
-    category
-  );
-
   let queryStr = `SELECT owner, title, review_id, category, 
   review_img_url, created_at, votes, 
   (SELECT COUNT(*) FROM comments WHERE comments.review_id=reviews.review_id) AS comment_count 
@@ -94,14 +81,12 @@ exports.fetchReviews = (sort_by, order_by, category) => {
     queryStr += `\nORDER BY ${sort_by} ${order_by};`;
   }
 
-  console.log(queryStr);
   return db.query(queryStr).then((response) => {
     return response.rows;
   });
 };
 
 exports.selectReviewCommentsById = (review_id) => {
-  console.log("in model for review comments by ");
   return db
     .query(
       `SELECT comment_id, votes, created_at, author, body
@@ -116,7 +101,6 @@ exports.selectReviewCommentsById = (review_id) => {
 };
 
 exports.newCommentOnReviewById = (review_id, body, username) => {
-  console.log("In new comment on review by id model");
   return db
     .query(
       `INSERT INTO comments (author, body, review_id)

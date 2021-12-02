@@ -5,7 +5,6 @@ const {
 } = require("../utils/utils");
 
 exports.deleteComment = (req, res, next) => {
-  console.log("in delete comment controller");
   const { comment_id } = req.params;
   Promise.all([
     checkIfComment_idExists(comment_id),

@@ -13,7 +13,6 @@ describe("/api/categories", () => {
       .get("/api/categories")
       .expect(200)
       .then(({ body }) => {
-        console.log("first body:", body);
         expect(body.categories.length).toBe(4);
         expect(body.categories[0]).toEqual(
           expect.objectContaining({
@@ -240,7 +239,6 @@ describe("/api/reviews/:review_id/comments", () => {
       .get("/api/reviews/2/comments")
       .expect(200)
       .then(({ body }) => {
-        console.log("Body is:", body.comments);
         expect(body.comments.length).toBe(3);
         expect(body.comments[0]).toEqual(
           {
@@ -306,17 +304,17 @@ describe("/api/reviews/:review_id/comments", () => {
         expect(body).toEqual({ msg: "Sorry, bad data!" });
       });
   });
-  it("status 404: returns an error when an review_id doesn't exist", () => {
+  it("status 400: returns an error when an review_id doesn't exist", () => {
     return request(app)
-      .get("/api/reviews/19000/comments")
-      .expect(404)
+      .post("/api/reviews/19000/comments")
+      .expect(400)
       .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, review_id not found!" });
+        expect(body).toEqual({ msg: "Sorry, bad data!" });
       });
   });
   it("status 400: returns an error when an invalid review_id format is input", () => {
     return request(app)
-      .get("/api/reviews/dogs/comments")
+      .post("/api/reviews/dogs/comments")
       .expect(400)
       .then(({ body }) => {
         expect(body).toEqual({ msg: "Sorry, id not a valid input!" });
@@ -380,6 +378,98 @@ describe("/api", () => {
                   },
                 ],
               },
+            },
+            "PATCH /api/reviews": {
+              description:
+                "allows an update of the votes property to be made to a review",
+              queries: [],
+              exampleResponse: {
+                "review:": [
+                  {
+                    owner: "mallionaire",
+                    title: "Agricola",
+                    review_id: 1,
+                    review_body: "Farmyard fun!",
+                    designer: "Uwe Rosenberg",
+                    review_img_url:
+                      "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+                    category: "euro game",
+                    created_at: "2021-01-18T10:00:20.514Z",
+                    votes: 2,
+                  },
+                ],
+              },
+            },
+            "GET /api/reviews/:review_id": {
+              description: "serves an array of reviews by review_id",
+              queries: [],
+              exampleResponse: {
+                reviews: [
+                  {
+                    owner: "mallionaire",
+                    title: "Agricola",
+                    review_id: 1,
+                    review_body: "Farmyard fun!",
+                    designer: "Uwe Rosenberg",
+                    review_img_url:
+                      "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+                    category: "euro game",
+                    created_at: "2021-01-18T10:00:20.514Z",
+                    votes: 1,
+                    comment_count: "0",
+                  },
+                ],
+              },
+            },
+            "GET /api/reviews/:review_id/comments": {
+              description:
+                "serves an array of comments on a review by review_id",
+              queries: [],
+              exampleResponse: {
+                comments: [
+                  {
+                    author: "bainesface",
+                    body: "I loved this game too!",
+                    comment_id: 1,
+                    created_at: "2017-11-22T12:43:33.389Z",
+                    votes: 16,
+                  },
+                  {
+                    author: "bainesface",
+                    body: "EPIC board game!",
+                    comment_id: 4,
+                    created_at: "2017-11-22T12:36:03.389Z",
+                    votes: 16,
+                  },
+                  {
+                    author: "mallionaire",
+                    body: "Now this is a story all about how, board games turned my life upside down",
+                    comment_id: 5,
+                    created_at: "2021-01-18T10:24:05.410Z",
+                    votes: 13,
+                  },
+                ],
+              },
+            },
+            "POST /api/reviews/:review_id/comments": {
+              description: "post a new comment to a review by review_id",
+              queries: [],
+              exampleResponse: {
+                comment: [
+                  {
+                    author: "bainesface",
+                    body: "I really loved this game!",
+                    comment_id: 7,
+                    created_at: "2017-11-22T12:36:03.389Z",
+                    review_id: 2,
+                    votes: 0,
+                  },
+                ],
+              },
+            },
+            "DELETE /api/comments/:comment_id": {
+              description: "delete a comment by comment_id",
+              queries: [],
             },
           },
         });

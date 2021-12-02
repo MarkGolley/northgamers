@@ -14,7 +14,6 @@ const {
 
 exports.getReviewById = (req, res, next) => {
   const { review_id } = req.params;
-  console.log("in get review by id controller");
 
   selectReviewById(review_id)
     .then((review) => {
@@ -28,7 +27,6 @@ exports.getReviewById = (req, res, next) => {
 exports.patchReviewById = (req, res, next) => {
   const { review_id } = req.params;
   const body = req.body.inc_votes;
-  console.log("in update review by id controller");
 
   updateReviewById(review_id, body)
     .then((review) => {
@@ -40,9 +38,8 @@ exports.patchReviewById = (req, res, next) => {
 };
 
 exports.getReviews = (req, res, next) => {
-  console.log("in the reviews by query controller");
   let { sort_by, order_by, category } = req.query;
-  console.log(sort_by, order_by, category);
+
   if (sort_by === undefined) {
     sort_by = "title";
   }
@@ -54,7 +51,6 @@ exports.getReviews = (req, res, next) => {
   }
   fetchReviews(sort_by, order_by, category)
     .then((reviews) => {
-      console.log(reviews);
       res.status(200).send({ reviews: reviews });
     })
     .catch((err) => {
@@ -63,7 +59,6 @@ exports.getReviews = (req, res, next) => {
 };
 
 exports.getReviewComments = (req, res, next) => {
-  console.log("In get review comments controller");
   const { review_id } = req.params;
   Promise.all([
     checkIfReview_idExists(review_id),
@@ -78,7 +73,6 @@ exports.getReviewComments = (req, res, next) => {
 };
 
 exports.postCommentOnReviewById = (req, res, next) => {
-  console.log("in post comment to review controller");
   const { review_id } = req.params;
   const { body, username } = req.body;
   newCommentOnReviewById(review_id, body, username)

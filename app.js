@@ -12,7 +12,6 @@ app.get("/", (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  console.log("err", err);
   if (err.code === "22P02") {
     res.status(400).send({ msg: "Sorry, id not a valid input!" });
   } else if (err.code === "23503" || err.code === "23502") {
@@ -21,7 +20,5 @@ app.use((err, req, res, next) => {
     res.status(err.status).send({ msg: err.msg });
   }
 });
-
-//blank
 
 module.exports = app;

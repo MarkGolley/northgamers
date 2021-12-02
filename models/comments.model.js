@@ -1,8 +1,6 @@
-const { response } = require("express");
 const db = require("../db/connection");
 
 exports.removeCommentById = (comment_id) => {
-  console.log("in remove comment model, using comment ID:", comment_id);
   return db
     .query(
       `DELETE FROM comments
