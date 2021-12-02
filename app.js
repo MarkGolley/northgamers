@@ -1,7 +1,6 @@
 const { response } = require("express");
 const express = require("express");
 const app = express();
-const listEndpoints = require("express-list-endpoints");
 app.use(express.json());
 
 const apiRouter = require("./routers/api.router");
@@ -23,7 +22,4 @@ app.use((err, req, res, next) => {
   }
 });
 
-let endpoints = listEndpoints(app);
-console.log(endpoints);
-
-module.exports = { app, endpoints };
+module.exports = { app };
