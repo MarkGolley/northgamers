@@ -2,7 +2,7 @@ const db = require("../db/connection.js");
 const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const request = require("supertest");
-const app = require("../app");
+const { app } = require("../app");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -334,6 +334,18 @@ describe("/api/comments/:comment_id", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body).toEqual({ msg: "Sorry, id not a valid input!" });
+      });
+  });
+});
+
+describe("/api", () => {
+  it.only("status 200: responds with the available endpoints", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then((body) => {
+        console.log(body);
+        expect(body.apis).toEqual(undefined);
       });
   });
 });
