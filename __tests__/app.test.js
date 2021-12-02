@@ -344,25 +344,26 @@ describe("/api", () => {
       .get("/api")
       .expect(200)
       .then((body) => {
-        console.log(body);
-        expect(body.apis).toEqual([
-          {
-            path: "/api/categories",
-          },
-          {
-            path: "/api/reviews/:review_id",
-          },
-          {
-            path: "/api/reviews",
-          },
-          {
-            path: "/api/reviews/:review_id/comments",
-          },
-          {
-            path: "/api/comments/:comment_id",
-          },
-          { path: "/api" },
-        ]);
+        expect(body.body).toEqual({
+          apis: [
+            {
+              path: "/api/categories",
+            },
+            {
+              path: "/api/reviews/:review_id",
+            },
+            {
+              path: "/api/reviews",
+            },
+            {
+              path: "/api/reviews/:review_id/comments",
+            },
+            {
+              path: "/api/comments/:comment_id",
+            },
+            { path: "/api" },
+          ],
+        });
       });
   });
 });
