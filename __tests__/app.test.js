@@ -476,3 +476,41 @@ describe("/api", () => {
       });
   });
 });
+
+describe("/api/users", () => {
+  it.only("status 200: returns an array of objects of username", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toEqual({
+          users: [
+            {
+              avatar_url:
+                "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+              name: "haz",
+              username: "mallionaire",
+            },
+            {
+              avatar_url:
+                "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4",
+              name: "philippa",
+              username: "philippaclaire9",
+            },
+            {
+              avatar_url:
+                "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4",
+              name: "sarah",
+              username: "bainesface",
+            },
+            {
+              avatar_url:
+                "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+              name: "dave",
+              username: "dav3rid",
+            },
+          ],
+        });
+      });
+  });
+});
