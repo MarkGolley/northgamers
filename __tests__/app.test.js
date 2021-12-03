@@ -3,18 +3,16 @@ const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const request = require("supertest");
 const app = require("../app");
-const { response } = require("express");
 
-beforeAll(() => {
+beforeEach(() => seed(testData));
+afterAll(() => {
   return db
     .query(`SELECT title FROM reviews ORDER BY title ASC;`)
     .then((response) => {
       console.log(response.rows, "<<<<<<<<");
+      return db.end();
     });
 });
-
-beforeEach(() => seed(testData));
-afterAll(() => db.end());
 
 describe("/api/categories", () => {
   it("status 200: returns with array object of all categories data", () => {
