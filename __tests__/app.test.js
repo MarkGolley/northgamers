@@ -3,6 +3,15 @@ const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const request = require("supertest");
 const app = require("../app");
+const { response } = require("express");
+
+beforeAll(() => {
+  return db
+    .query(`SELECT title FROM reviews ORDER BY title ASC;`)
+    .then((response) => {
+      console.log(response.rows, "<<<<<<<<");
+    });
+});
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
