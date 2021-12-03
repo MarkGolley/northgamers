@@ -478,7 +478,7 @@ describe("/api", () => {
 });
 
 describe("/api/users", () => {
-  it.only("status 200: returns an array of objects of username", () => {
+  it("status 200: returns an array of objects of username", () => {
     return request(app)
       .get("/api/users")
       .expect(200)
@@ -510,6 +510,53 @@ describe("/api/users", () => {
               username: "dav3rid",
             },
           ],
+        });
+      });
+  });
+  it("status 400: returns an error as wrong address typed in", () => {
+    return request(app)
+      .get("/api/user")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body).toEqual({});
+      });
+  });
+});
+describe("/api/users/:username", () => {
+  it("status 200: returns an object of username", () => {
+    return request(app)
+      .get("/api/users/mallionaire")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toEqual({
+          user: [
+            {
+              avatar_url:
+                "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+              name: "haz",
+              username: "mallionaire",
+            },
+          ],
+        });
+      });
+  });
+  it("status 404: returns an error of invalid user id", () => {
+    return request(app)
+      .get("/api/users/markeywarkey")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body).toEqual({
+          msg: "Sorry, username not found!",
+        });
+      });
+  });
+  it("status 400: returns an error of username invalid format", () => {
+    return request(app)
+      .get("/api/users/true")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body).toEqual({
+          msg: "Sorry, username not found!",
         });
       });
   });

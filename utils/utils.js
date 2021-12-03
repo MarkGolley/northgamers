@@ -61,3 +61,34 @@ exports.checkIfComment_idValid = (comment_id) => {
     return { comment_id: comment_id };
   }
 };
+
+exports.checkIfUsernameExists = (username) => {
+  return db
+    .query(
+      `SELECT *
+    FROM users
+    WHERE username = $1`,
+      [username]
+    )
+    .then((body) => {
+      if (body.rows.length === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: "Sorry, username not found!",
+        });
+      } else {
+        return true;
+      }
+    });
+};
+
+exports.checkIfUsernameValid = (username) => {
+  if (typeof toString(username) !== "string") {
+    return Promise.reject({
+      status: 400,
+      msg: "Sorry, username not a valid input!",
+    });
+  } else {
+    return { username: username };
+  }
+};

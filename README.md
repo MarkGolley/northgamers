@@ -239,7 +239,7 @@ Responds with:
 
 ---
 
-NEXT - #### **GET /api**
+COMPLETE - #### **GET /api**
 
 Responds with:
 
@@ -264,7 +264,7 @@ Responds with:
 
 ### Further Routes
 
-#### **GET /api/users**
+COMPLETE - #### **GET /api/users**
 
 Responds with:
 
@@ -273,7 +273,7 @@ Responds with:
 
 ---
 
-#### **GET /api/users/:username**
+NEXT - #### **GET /api/users/:username**
 
 Responds with:
 
