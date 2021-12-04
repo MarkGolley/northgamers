@@ -3,6 +3,7 @@ const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const request = require("supertest");
 const app = require("../app");
+const toBeSortedBy = require("jest-sorted");
 
 beforeEach(() => seed(testData));
 afterAll(() => {
@@ -102,19 +103,7 @@ describe("/api/reviews/?query", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body.reviews.length).toBe(13);
-        expect(body.reviews[0]).toEqual(
-          expect.objectContaining({
-            category: "social deduction",
-            comment_count: "0",
-            created_at: "2021-01-18T10:01:41.251Z",
-            owner: "mallionaire",
-            review_id: 9,
-            review_img_url:
-              "https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg",
-            title: "A truly Quacking Game; Quacks of Quedlinburg",
-            votes: 10,
-          })
-        );
+        expect(body.reviews).toBeSortedBy("title");
       });
   });
   it("status 200: returns with a sorted by owner object (When a valid sort_by is input) of the specific review data", () => {
@@ -123,19 +112,7 @@ describe("/api/reviews/?query", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body.reviews.length).toBe(13);
-        expect(body.reviews[0]).toEqual(
-          expect.objectContaining({
-            category: "social deduction",
-            comment_count: "3",
-            created_at: "2021-01-18T10:01:41.251Z",
-            owner: "bainesface",
-            review_id: 3,
-            review_img_url:
-              "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
-            title: "Ultimate Werewolf",
-            votes: 5,
-          })
-        );
+        expect(body.reviews).toBeSortedBy("owner");
       });
   });
   it("status 200: returns with an ordered by descending object (When a valid order_by is input) of the specific review data", () => {
