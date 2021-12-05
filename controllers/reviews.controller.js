@@ -38,7 +38,7 @@ exports.patchReviewById = (req, res, next) => {
 };
 
 exports.getReviews = (req, res, next) => {
-  let { sort_by, order_by, category } = req.query;
+  let { sort_by, order_by, category, limit, p } = req.query;
 
   if (sort_by === undefined) {
     sort_by = "title";
@@ -49,7 +49,14 @@ exports.getReviews = (req, res, next) => {
   if (category === undefined) {
     category = "";
   }
-  fetchReviews(sort_by, order_by, category)
+  if (limit === undefined) {
+    limit = 10;
+  }
+  if (p === undefined) {
+    p = 0;
+  }
+
+  fetchReviews(sort_by, order_by, category, limit, p)
     .then((reviews) => {
       res.status(200).send({ reviews: reviews });
     })
@@ -60,6 +67,7 @@ exports.getReviews = (req, res, next) => {
 
 exports.getReviewComments = (req, res, next) => {
   const { review_id } = req.params;
+
   Promise.all([
     checkIfReview_idExists(review_id),
     selectReviewCommentsById(review_id),

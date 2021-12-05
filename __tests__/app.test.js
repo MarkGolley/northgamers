@@ -102,7 +102,7 @@ describe("/api/reviews/?query", () => {
       .get("/api/reviews?sort_by=title")
       .expect(200)
       .then(({ body }) => {
-        expect(body.reviews.length).toBe(13);
+        expect(body.reviews.length).toBe(10);
         expect(body.reviews).toBeSortedBy("title");
       });
   });
@@ -111,7 +111,7 @@ describe("/api/reviews/?query", () => {
       .get("/api/reviews?sort_by=owner")
       .expect(200)
       .then(({ body }) => {
-        expect(body.reviews.length).toBe(13);
+        expect(body.reviews.length).toBe(10);
         expect(body.reviews).toBeSortedBy("owner");
       });
   });
@@ -120,7 +120,7 @@ describe("/api/reviews/?query", () => {
       .get("/api/reviews?order_by=DESC")
       .expect(200)
       .then(({ body }) => {
-        expect(body.reviews.length).toBe(13);
+        expect(body.reviews.length).toBe(10);
         expect(body.reviews[0]).toEqual(
           expect.objectContaining({
             category: "social deduction",
@@ -183,7 +183,7 @@ describe("/api/reviews/?query", () => {
       .get("/api/reviews")
       .expect(200)
       .then(({ body }) => {
-        expect(body.reviews.length).toBe(13);
+        expect(body.reviews.length).toBe(10);
         expect(body.reviews[0]).toEqual(
           expect.objectContaining({
             category: "social deduction",
@@ -195,6 +195,27 @@ describe("/api/reviews/?query", () => {
               "https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg",
             title: "A truly Quacking Game; Quacks of Quedlinburg",
             votes: 10,
+          })
+        );
+      });
+  });
+  it("status 200: returns page 2 of a default query object, when limit is 10 and page is 1, of the specific review data", () => {
+    return request(app)
+      .get("/api/reviews?limit=10&&p=1")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews.length).toBe(3);
+        expect(body.reviews[0]).toEqual(
+          expect.objectContaining({
+            category: "social deduction",
+            comment_count: "0",
+            created_at: "1970-01-10T02:08:38.400Z",
+            owner: "mallionaire",
+            review_id: 13,
+            review_img_url:
+              "https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg",
+            title: "Settlers of Catan: Don't Settle For Less",
+            votes: 16,
           })
         );
       });
@@ -582,7 +603,7 @@ describe("/api/users/:username", () => {
 });
 
 describe("/api/comments/:comment_id", () => {
-  it.only("status 200: returns an updated comment object", () => {
+  it("status 200: returns an updated comment object", () => {
     return request(app)
       .patch("/api/comments/2")
       .send({ inc_votes: 3 })
@@ -602,7 +623,7 @@ describe("/api/comments/:comment_id", () => {
         });
       });
   });
-  it.only("status 404: returns an error of invalid comment_id", () => {
+  it("status 404: returns an error of invalid comment_id", () => {
     return request(app)
       .patch("/api/comments/24554")
       .expect(404)
@@ -612,7 +633,7 @@ describe("/api/comments/:comment_id", () => {
         });
       });
   });
-  it.only("status 400: returns an error of comment_id invalid format", () => {
+  it("status 400: returns an error of comment_id invalid format", () => {
     return request(app)
       .patch("/api/comments/dog")
       .expect(400)

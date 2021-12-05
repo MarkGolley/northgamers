@@ -31,7 +31,6 @@ exports.patchComment = (req, res, next) => {
     checkIfComment_idValid(comment_id),
   ])
     .then((comment) => {
-      console.log(comment);
       res.status(200).send({ comment: comment[0] });
     })
     .catch((err) => {

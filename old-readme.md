@@ -284,7 +284,7 @@ Responds with:
 
 ---
 
-NEXT - #### **PATCH /api/comments/:comment_id**
+COMPLETE - #### **PATCH /api/comments/:comment_id**
 
 Request body accepts:
 

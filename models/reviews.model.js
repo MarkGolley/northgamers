@@ -37,7 +37,7 @@ exports.updateReviewById = (review_id, body) => {
     });
 };
 
-exports.fetchReviews = (sort_by, order_by, category) => {
+exports.fetchReviews = (sort_by, order_by, category, limit, p) => {
   let queryStr = `SELECT owner, title, review_id, category, 
   review_img_url, created_at, votes, 
   (SELECT COUNT(*) FROM comments WHERE comments.review_id=reviews.review_id) AS comment_count 
@@ -78,8 +78,9 @@ exports.fetchReviews = (sort_by, order_by, category) => {
   if (!["ASC", "DESC"].includes(order_by)) {
     Promise.reject({ status: 400, msg: "Invalid order_by chosen" });
   } else {
-    queryStr += `\nORDER BY ${sort_by} ${order_by};`;
+    queryStr += `\nORDER BY ${sort_by} ${order_by}`;
   }
+  queryStr += `\nLIMIT ${limit} OFFSET ${p * limit};`;
 
   return db.query(queryStr).then((response) => {
     return response.rows;

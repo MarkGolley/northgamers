@@ -5,7 +5,7 @@ exports.removeCommentById = (comment_id) => {
     .query(
       `DELETE FROM comments
       WHERE comment_id = $1
-      RETURNING *:`,
+      RETURNING *;`,
       [comment_id]
     )
     .then((response) => {
