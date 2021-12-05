@@ -455,6 +455,40 @@ describe("/api", () => {
               description: "delete a comment by comment_id",
               queries: [],
             },
+            "GET /api/users": {
+              description: "returns all users in an array",
+              queries: [],
+              exampleResponse: {
+                comment: [
+                  {
+                    avatar_url:
+                      "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+                    name: "haz",
+                    username: "mallionaire",
+                  },
+                  {
+                    avatar_url:
+                      "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4",
+                    name: "philippa",
+                    username: "philippaclaire9",
+                  },
+                ],
+              },
+            },
+            "GET /api/users/:username": {
+              description: "returns a specific user details",
+              queries: [],
+              exampleResponse: {
+                comment: [
+                  {
+                    avatar_url:
+                      "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+                    name: "haz",
+                    username: "mallionaire",
+                  },
+                ],
+              },
+            },
           },
         });
       });
@@ -506,6 +540,7 @@ describe("/api/users", () => {
       });
   });
 });
+
 describe("/api/users/:username", () => {
   it("status 200: returns an object of username", () => {
     return request(app)
@@ -541,6 +576,49 @@ describe("/api/users/:username", () => {
       .then(({ body }) => {
         expect(body).toEqual({
           msg: "Sorry, username not found!",
+        });
+      });
+  });
+});
+
+describe("/api/comments/:comment_id", () => {
+  it.only("status 200: returns an updated comment object", () => {
+    return request(app)
+      .patch("/api/comments/2")
+      .send({ inc_votes: 3 })
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toEqual({
+          comment: [
+            {
+              author: "mallionaire",
+              body: "My dog loved this game too!",
+              comment_id: 2,
+              created_at: "2021-01-18T10:09:05.410Z",
+              review_id: 3,
+              votes: 16,
+            },
+          ],
+        });
+      });
+  });
+  it.only("status 404: returns an error of invalid comment_id", () => {
+    return request(app)
+      .patch("/api/comments/24554")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body).toEqual({
+          msg: "Sorry, comment_id not found!",
+        });
+      });
+  });
+  it.only("status 400: returns an error of comment_id invalid format", () => {
+    return request(app)
+      .patch("/api/comments/dog")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({
+          msg: "Sorry, id not a valid input!",
         });
       });
   });

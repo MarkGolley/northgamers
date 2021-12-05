@@ -1,4 +1,7 @@
-const { removeCommentById } = require("../models/comments.model");
+const {
+  removeCommentById,
+  updateComment,
+} = require("../models/comments.model");
 const {
   checkIfComment_idExists,
   checkIfComment_idValid,
@@ -13,6 +16,23 @@ exports.deleteComment = (req, res, next) => {
   ])
     .then((response) => {
       res.status(204).send();
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.patchComment = (req, res, next) => {
+  const { comment_id } = req.params;
+  const { inc_votes } = req.body;
+  Promise.all([
+    updateComment(comment_id, inc_votes),
+    checkIfComment_idExists(comment_id),
+    checkIfComment_idValid(comment_id),
+  ])
+    .then((comment) => {
+      console.log(comment);
+      res.status(200).send({ comment: comment[0] });
     })
     .catch((err) => {
       next(err);

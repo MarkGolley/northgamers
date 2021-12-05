@@ -118,5 +118,36 @@
   "DELETE /api/comments/:comment_id": {
     "description": "delete a comment by comment_id",
     "queries": []
+  },
+  "GET /api/users": {
+    "description": "returns all users in an array",
+    "queries": [],
+    "exampleResponse": {
+      "comment": [
+        {
+          "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+          "name": "haz",
+          "username": "mallionaire"
+        },
+        {
+          "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4",
+          "name": "philippa",
+          "username": "philippaclaire9"
+        }
+      ]
+    }
+  },
+  "GET /api/users/:username": {
+    "description": "returns a specific user details",
+    "queries": [],
+    "exampleResponse": {
+      "comment": [
+        {
+          "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+          "name": "haz",
+          "username": "mallionaire"
+        }
+      ]
+    }
   }
 }

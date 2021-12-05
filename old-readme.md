@@ -273,7 +273,7 @@ Responds with:
 
 ---
 
-NEXT - #### **GET /api/users/:username**
+COMPLETE - #### **GET /api/users/:username**
 
 Responds with:
 
@@ -284,7 +284,7 @@ Responds with:
 
 ---
 
-#### **PATCH /api/comments/:comment_id**
+NEXT - #### **PATCH /api/comments/:comment_id**
 
 Request body accepts:
 
