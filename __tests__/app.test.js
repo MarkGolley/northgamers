@@ -76,7 +76,7 @@ describe("/api/reviews/:review_id", () => {
 });
 
 describe("/api/reviews/?query", () => {
-  it.skip("status 200: returns with a sorted by title object (When a valid sort_by is input) of the specific review data", () => {
+  it.skip("status 200: returns with a sorted by title object", () => {
     return request(app)
       .get("/api/reviews?sort_by=title")
       .expect(200)
@@ -85,7 +85,7 @@ describe("/api/reviews/?query", () => {
         expect(body.reviews).toBeSortedBy("title");
       });
   });
-  it("status 200: returns with a sorted by owner object (When a valid sort_by is input) of the specific review data", () => {
+  it("status 200: returns with a sorted by owner object", () => {
     return request(app)
       .get("/api/reviews?sort_by=owner")
       .expect(200)
@@ -94,28 +94,61 @@ describe("/api/reviews/?query", () => {
         expect(body.reviews).toBeSortedBy("owner");
       });
   });
-  it("status 200: returns with an ordered by descending object (When a valid order_by is input) of the specific review data", () => {
+  it("status 200: returns with a sorted by review_id object", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=review_id")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews.length).toBe(10);
+        expect(body.reviews).toBeSortedBy("review_id");
+      });
+  });
+  it("status 200: returns with a sorted by review_img_url object", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=review_img_url")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews.length).toBe(10);
+        expect(body.reviews).toBeSortedBy("review_img_url");
+      });
+  });
+  it("status 200: returns with a sorted by votes object", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=votes")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews.length).toBe(10);
+        expect(body.reviews).toBeSortedBy("votes");
+      });
+  });
+  it("status 200: returns with a sorted by category object", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=category")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews.length).toBe(10);
+        expect(body.reviews).toBeSortedBy("category");
+      });
+  });
+  it("status 200: returns with a sorted by created_at object", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=created_at")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews.length).toBe(10);
+        expect(body.reviews).toBeSortedBy("created_at");
+      });
+  });
+  it("status 200: returns with an ordered by descending object", () => {
     return request(app)
       .get("/api/reviews?order_by=DESC")
       .expect(200)
       .then(({ body }) => {
         expect(body.reviews.length).toBe(10);
-        expect(body.reviews[0]).toEqual(
-          expect.objectContaining({
-            category: "social deduction",
-            comment_count: "3",
-            created_at: "2021-01-18T10:01:41.251Z",
-            owner: "bainesface",
-            review_id: 3,
-            review_img_url:
-              "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
-            title: "Ultimate Werewolf",
-            votes: 5,
-          })
-        );
+        expect(body.reviews).toBeSortedBy("title", { descending: true });
       });
   });
-  it("status 200: returns with a filtered by category object (When a valid category is input) of the specific review data", () => {
+  it("status 200: returns with a filtered by category=dexterity object", () => {
     return request(app)
       .get("/api/reviews?category=dexterity")
       .expect(200)
@@ -134,6 +167,59 @@ describe("/api/reviews/?query", () => {
             votes: 5,
           })
         );
+      });
+  });
+  it("status 200: returns with a filtered by category=social deduction object", () => {
+    return request(app)
+      .get("/api/reviews?category=social deduction")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews.length).toBe(10);
+        expect(body.reviews[0]).toEqual(
+          expect.objectContaining({
+            category: "social deduction",
+            comment_count: "0",
+            created_at: "2021-01-18T10:01:41.251Z",
+            owner: "mallionaire",
+            review_id: 9,
+            review_img_url:
+              "https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg",
+            title: "A truly Quacking Game; Quacks of Quedlinburg",
+            total_count: "3",
+            votes: 10,
+          })
+        );
+      });
+  });
+  it("status 200: returns with a filtered by category=euro game object", () => {
+    return request(app)
+      .get("/api/reviews?category=euro game")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews.length).toBe(1);
+        expect(body.reviews[0]).toEqual(
+          expect.objectContaining({
+            category: "euro game",
+            comment_count: "0",
+            created_at: "2021-01-18T10:00:20.514Z",
+            owner: "mallionaire",
+            review_id: 1,
+            review_img_url:
+              "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+            title: "Agricola",
+            total_count: "3",
+            votes: 1,
+          })
+        );
+      });
+  });
+  it("status 200: returns with a filtered by category=strategy object", () => {
+    return request(app)
+      .get("/api/reviews?category=strategy")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews.length).toBe(0);
+        expect(body.reviews[0]).toEqual(expect.objectContaining({}));
       });
   });
   it("status 200: returns with a filtered, sorted and ordered object of the specific review data", () => {
@@ -157,7 +243,30 @@ describe("/api/reviews/?query", () => {
         );
       });
   });
-  it.skip("status 200: returns with a standard default query object, when no query is supplied, of the specific review data", () => {
+  it("xxstatus 200: returns with a filtered, sorted, ordered, limited and paged object of the specific review data", () => {
+    return request(app)
+      .get(
+        "/api/reviews?sort_by=designer&&order_by=DESC&&category=dexterity&&limit=10&&p=0"
+      )
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews.length).toBe(1);
+        expect(body.reviews[0]).toEqual(
+          expect.objectContaining({
+            category: "dexterity",
+            comment_count: "3",
+            created_at: "2021-01-18T10:01:41.251Z",
+            owner: "philippaclaire9",
+            review_id: 2,
+            review_img_url:
+              "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+            title: "Jenga",
+            votes: 5,
+          })
+        );
+      });
+  });
+  it("status 200: returns with a standard default query object, when no query is supplied, of the specific review data", () => {
     return request(app)
       .get("/api/reviews")
       .expect(200)
@@ -178,7 +287,7 @@ describe("/api/reviews/?query", () => {
         );
       });
   });
-  it.skip("status 200: returns page 2 of a default query object, when limit is 10 and page is 1, of the specific review data", () => {
+  it("status 200: returns page 2 of a default query object, when limit is 10 and page is 1, of the specific review data", () => {
     return request(app)
       .get("/api/reviews?limit=10&&p=1")
       .expect(200)

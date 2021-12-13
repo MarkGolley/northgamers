@@ -53,6 +53,8 @@ exports.fetchReviews = (sort_by, order_by, category, limit, p) => {
       "roll-and-write",
       "deck-building",
       "engine-building",
+      "social deduction",
+      "euro game",
       "",
     ].includes(category)
   ) {
