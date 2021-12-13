@@ -37,7 +37,7 @@ Generally things are good, and you are failing very few of our tests. BUT you ar
 
 - `GET /api/categories`
 
-  - [ ] Status 200, array of category objects - _wrong key!_
+  - [✓] Status 200, array of category objects
 
 - `GET /api/reviews/:review_id`
 
@@ -118,21 +118,21 @@ Generally things are good, and you are failing very few of our tests. BUT you ar
 
 - `GET /api/users`
 
-  - [ ] Status 200, responds with array of user objects
+  - [✓] Status 200, responds with array of user objects
 
 - `GET /api/users/:username`
 
-  - [ ] Status 200, responds with single user object
-  - [ ] Status 404, non existent ID, e.g 999
-  - [ ] Status 400, invalid ID, e.g "not-an-id"
+  - [✓] Status 200, responds with single user object
+  - [✓] Status 404, non existent ID, e.g 999
+  - [✓] Status 400, invalid ID, e.g "not-an-id"
 
 - `PATCH /api/comments/:comment_id`
 
-  - [ ] Status 200, updated single comment object
-  - [ ] Status 400, invalid ID, e.g. string of "not-an-id"
-  - [ ] Status 400, invalid inc_votes type, e.g. property is not a number
-  - [ ] Status 404, non existent ID, e.g. 0 or 9999
-  - [ ] Status 200, missing `inc_votes` key. No effect to comment.
+  - [✓] Status 200, updated single comment object
+  - [✓] Status 400, invalid ID, e.g. string of "not-an-id"
+  - [✓] Status 400, invalid inc_votes type, e.g. property is not a number
+  - [✓] Status 404, non existent ID, e.g. 0 or 9999
+  - [✓] Status 200, missing `inc_votes` key. No effect to comment.
 
 ## Extra Advanced Tasks
 

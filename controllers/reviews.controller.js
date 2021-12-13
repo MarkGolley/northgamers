@@ -4,11 +4,13 @@ const {
   fetchReviews,
   selectReviewCommentsById,
   newCommentOnReviewById,
+  addReview,
 } = require("../models/reviews.model");
 
 const {
   checkIfReview_idExists,
   checkIfReview_idValid,
+  checkIfUsernameExists,
 } = require("../utils/utils");
 
 exports.getReviewById = (req, res, next) => {
@@ -93,6 +95,20 @@ exports.postCommentOnReviewById = (req, res, next) => {
   newCommentOnReviewById(review_id, body, username)
     .then((comment) => {
       res.status(200).send({ comment: comment });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.postReview = (req, res, next) => {
+  const { owner, title, review_body, designer, category } = req.body;
+  Promise.all([
+    addReview(owner, title, review_body, designer, category),
+    checkIfUsernameExists(owner),
+  ])
+    .then((review) => {
+      res.status(201).send({ review: review[0] });
     })
     .catch((err) => {
       next(err);

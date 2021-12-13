@@ -19,11 +19,40 @@ describe("/api/categories", () => {
         expect(body.categories.length).toBe(4);
         expect(body.categories[0]).toEqual(
           expect.objectContaining({
-            category_id: expect.any(String),
+            slug: expect.any(String),
             description: expect.any(String),
           })
         );
         expect(Array.isArray(body.categories)).toBe(true);
+      });
+  });
+});
+
+describe("/api/reviews", () => {
+  it.only("status 201: returns with array object of the newly added review", () => {
+    return request(app)
+      .post("/api/reviews")
+      .send({
+        owner: "bainesface",
+        title: "I loved this game",
+        review_body: "OMG what a game!!",
+        designer: "Mr Game O'Game",
+        category: "dexterity",
+      })
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.categories.length).toBe(1);
+        expect(body.categories[0]).toEqual({
+          owner: "bainesface",
+          title: "I loved this game",
+          review_body: "OMG what a game!!",
+          review_id: 10,
+          designer: "Mr Game O'Game",
+          category: "dexterity",
+          votes: 0,
+          created_at: 100,
+          comment_count: 1,
+        });
       });
   });
 });
@@ -153,7 +182,7 @@ describe("/api/reviews/?query", () => {
       .get("/api/reviews?category=dexterity")
       .expect(200)
       .then(({ body }) => {
-        expect(body.reviews.length).toBe(1);
+        expect(body.reviews.length).toBe(3);
         expect(body.reviews[0]).toEqual(
           expect.objectContaining({
             category: "dexterity",
@@ -236,7 +265,7 @@ describe("/api/reviews/?query", () => {
       .get("/api/reviews?sort_by=designer&&order_by=DESC&&category=dexterity")
       .expect(200)
       .then(({ body }) => {
-        expect(body.reviews.length).toBe(1);
+        expect(body.reviews.length).toBe(3);
         expect(body.reviews[0]).toEqual(
           expect.objectContaining({
             category: "dexterity",
@@ -259,7 +288,7 @@ describe("/api/reviews/?query", () => {
       )
       .expect(200)
       .then(({ body }) => {
-        expect(body.reviews.length).toBe(1);
+        expect(body.reviews.length).toBe(3);
         expect(body.reviews[0]).toEqual(
           expect.objectContaining({
             category: "dexterity",

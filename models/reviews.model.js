@@ -1,5 +1,4 @@
 const db = require("../db/connection");
-const { commentData } = require("../db/data/test-data");
 
 exports.selectReviewById = (review_id) => {
   return db
@@ -39,11 +38,12 @@ exports.updateReviewById = (review_id, body) => {
 };
 
 exports.fetchReviews = (sort_by, order_by, category, limit, p) => {
-  let queryStr = `SELECT owner, title, review_id, category, 
-  review_img_url, created_at, votes, 
-  (SELECT COUNT(*) FROM comments WHERE comments.review_id=reviews.review_id) AS comment_count,
-  (SELECT COUNT(*) FROM reviews)-(${limit}) AS total_count
-  FROM reviews`;
+  let queryStr = `SELECT owner, title, reviews.review_id, category, 
+  review_img_url, reviews.created_at, reviews.votes,
+  (SELECT COUNT(*) FROM reviews)-(${limit}) AS total_count,
+  (SELECT COUNT(*) FROM comments WHERE comments.review_id=reviews.review_id) AS comment_count
+  FROM reviews
+  LEFT JOIN comments ON comments.review_id = reviews.review_id`;
 
   if (
     ![
@@ -114,6 +114,20 @@ exports.newCommentOnReviewById = (review_id, body, username) => {
       [username, body, parseInt(review_id)]
     )
     .then((response) => {
+      return response.rows;
+    });
+};
+
+exports.addReview = (owner, title, review_body, designer, category) => {
+  return db
+    .query(
+      `INSERT INTO reviews (owner, title, review_body, designer, category)
+  VALUES ($1,$2,$2,$4,$5)
+  RETURNING *;`,
+      [owner, title, review_body, designer, category]
+    )
+    .then((response) => {
+      console.log(response);
       return response.rows;
     });
 };

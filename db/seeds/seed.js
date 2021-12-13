@@ -18,7 +18,7 @@ const seed = (data) => {
     .then(() => {
       return db.query(
         `CREATE TABLE categories
-      (category_id VARCHAR(25) PRIMARY KEY,
+      (slug VARCHAR(25) PRIMARY KEY,
       description VARCHAR(255) NOT NULL);`
       );
     })
@@ -36,7 +36,7 @@ const seed = (data) => {
     designer VARCHAR(40) NOT NULL,
     review_img_url VARCHAR(250) DEFAULT 'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg' NOT NULL,
     votes INT DEFAULT 0 NOT NULL,
-    category VARCHAR(40) REFERENCES categories(category_id) NOT NULL,
+    category VARCHAR(40) REFERENCES categories(slug) NOT NULL,
     owner VARCHAR(50) REFERENCES users(username) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL);`);
     })
@@ -52,7 +52,7 @@ const seed = (data) => {
     .then(() => {
       const queryStr = format(
         `INSERT INTO categories
-      (category_id,description)
+      (slug,description)
       VALUES
       %L
       RETURNING *;`,
