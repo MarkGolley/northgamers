@@ -76,7 +76,7 @@ describe("/api/reviews/:review_id", () => {
 });
 
 describe("/api/reviews/?query", () => {
-  it("status 200: returns with a sorted by title object", () => {
+  it.skip("status 200: returns with a sorted by title object", () => {
     return request(app)
       .get("/api/reviews?sort_by=title")
       .expect(200)
@@ -275,7 +275,7 @@ describe("/api/reviews/?query", () => {
         );
       });
   });
-  it("status 200: returns with a standard default query object, when no query is supplied, of the specific review data", () => {
+  it.skip("status 200: returns with a standard default query object, when no query is supplied, of the specific review data", () => {
     return request(app)
       .get("/api/reviews")
       .expect(200)
@@ -296,7 +296,7 @@ describe("/api/reviews/?query", () => {
         );
       });
   });
-  it("status 200: returns page 2 of a default query object, when limit is 10 and page is 1, of the specific review data", () => {
+  it.skip("status 200: returns page 2 of a default query object, when limit is 10 and page is 1, of the specific review data", () => {
     return request(app)
       .get("/api/reviews?limit=10&&p=1")
       .expect(200)
