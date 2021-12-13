@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const { commentData } = require("../db/data/test-data");
 
 exports.selectReviewById = (review_id) => {
   return db
@@ -55,10 +56,11 @@ exports.fetchReviews = (sort_by, order_by, category, limit, p) => {
       "engine-building",
       "social deduction",
       "euro game",
+      "children''s games",
       "",
     ].includes(category)
   ) {
-    Promise.reject({ status: 400, msg: "Invalid category chosen" });
+    return Promise.reject({ status: 400, msg: "Invalid category chosen" });
   } else if (category !== "") {
     queryStr += `\nWHERE category = '${category}'`;
   }
@@ -76,10 +78,10 @@ exports.fetchReviews = (sort_by, order_by, category, limit, p) => {
       "comment_count",
     ].includes(sort_by)
   ) {
-    Promise.reject({ status: 400, msg: "Invalid sort_by chosen" });
+    return Promise.reject({ status: 400, msg: "Invalid sort_by chosen" });
   }
   if (!["ASC", "DESC"].includes(order_by)) {
-    Promise.reject({ status: 400, msg: "Invalid order_by chosen" });
+    return Promise.reject({ status: 400, msg: "Invalid order_by chosen" });
   } else {
     queryStr += `\nORDER BY ${sort_by} ${order_by}`;
   }
@@ -94,7 +96,7 @@ exports.selectReviewCommentsById = (review_id, limit, p) => {
   let queryStr = `SELECT comment_id, votes, created_at, author, body,
   (SELECT COUNT(*) FROM comments)-(${limit}) AS total_count
   FROM comments
-  WHERE review_id = 2
+  WHERE review_id = ${review_id}
   LIMIT ${limit} OFFSET ${p * limit};`;
 
   return db.query(queryStr).then((response) => {

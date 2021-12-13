@@ -76,7 +76,7 @@ describe("/api/reviews/:review_id", () => {
 });
 
 describe("/api/reviews/?query", () => {
-  it.skip("status 200: returns with a sorted by title object", () => {
+  it("status 200: returns with a sorted by title object", () => {
     return request(app)
       .get("/api/reviews?sort_by=title")
       .expect(200)
@@ -222,6 +222,15 @@ describe("/api/reviews/?query", () => {
         expect(body.reviews[0]).toEqual(expect.objectContaining({}));
       });
   });
+  it("status 200: returns with a filtered by category=children's games object", () => {
+    return request(app)
+      .get("/api/reviews?category=children''s games")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews.length).toBe(0);
+        expect(body.reviews[0]).toEqual(expect.objectContaining({}));
+      });
+  });
   it("status 200: returns with a filtered, sorted and ordered object of the specific review data", () => {
     return request(app)
       .get("/api/reviews?sort_by=designer&&order_by=DESC&&category=dexterity")
@@ -243,7 +252,7 @@ describe("/api/reviews/?query", () => {
         );
       });
   });
-  it("xxstatus 200: returns with a filtered, sorted, ordered, limited and paged object of the specific review data", () => {
+  it("status 200: returns with a filtered, sorted, ordered, limited and paged object of the specific review data", () => {
     return request(app)
       .get(
         "/api/reviews?sort_by=designer&&order_by=DESC&&category=dexterity&&limit=10&&p=0"
@@ -314,7 +323,7 @@ describe("/api/reviews/?query", () => {
 describe("/api/reviews/:review_id/comments", () => {
   it("status 200: returns with an object of the specific review data", () => {
     return request(app)
-      .get("/api/reviews/1/comments")
+      .get("/api/reviews/2/comments")
       .expect(200)
       .then(({ body }) => {
         expect(body.comments.length).toBe(3);
@@ -648,13 +657,37 @@ describe("error handling testing", () => {
         expect(body).toEqual({ msg: "Sorry, id not a valid input!" });
       });
   });
+  it("status 400: returns an error when an invalid sort_by query is input", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=bananas")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Invalid sort_by chosen" });
+      });
+  });
+  it("status 400: returns an error when an invalid order_by query is input", () => {
+    return request(app)
+      .get("/api/reviews?order_by=bananas")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Invalid order_by chosen" });
+      });
+  });
+  it("status 400: returns an error when an invalid category query is input", () => {
+    return request(app)
+      .get("/api/reviews?category=bananas")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Invalid category chosen" });
+      });
+  });
   it("status 400: returns an error if invalid username is provided", () => {
     return request(app)
       .post("/api/reviews/2/comments")
       .send({ username: "markeywarkey", body: "I really loved this game!" })
       .expect(400)
       .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, bad data!" });
+        expect(body).toEqual({ msg: "Sorry, bad input data!" });
       });
   });
   it("status 400: returns an error if empty post request made", () => {
@@ -663,7 +696,7 @@ describe("error handling testing", () => {
       .send({})
       .expect(400)
       .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, bad data!" });
+        expect(body).toEqual({ msg: "Sorry, bad input data!" });
       });
   });
   it("status 400: returns an error when an review_id doesn't exist", () => {
@@ -671,7 +704,7 @@ describe("error handling testing", () => {
       .post("/api/reviews/19000/comments")
       .expect(400)
       .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, bad data!" });
+        expect(body).toEqual({ msg: "Sorry, bad input data!" });
       });
   });
   it("status 400: returns an error when an invalid review_id format is input", () => {
@@ -717,6 +750,9 @@ describe("error handling testing", () => {
           msg: "Sorry, username not found!",
         });
       });
+  });
+  it("status 204: deletes a comment by comment Id", () => {
+    return request(app).delete("/api/comments/10").expect(404);
   });
   it("status 404: returns an error of invalid comment_id", () => {
     return request(app)

@@ -1,4 +1,3 @@
-const { response, urlencoded } = require("express");
 const {
   selectReviewById,
   updateReviewById,
@@ -61,6 +60,7 @@ exports.getReviews = (req, res, next) => {
       res.status(200).send({ reviews: reviews });
     })
     .catch((err) => {
+      console.log(err);
       next(err);
     });
 };

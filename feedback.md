@@ -55,15 +55,15 @@ Generally things are good, and you are failing very few of our tests. BUT you ar
 
 - `GET /api/reviews`
 
-  - [ ] Status 200, array of review objects (including `comment_count`, excluding `body`)
+  - [✓] Status 200, array of review objects (including `comment_count`, excluding `body`)
   - [✓] Status 200, default sort & order: `created_at`, `desc`
-  - [ ] Status 200, accepts `sort_by` query, e.g. `?sort_by=votes`
-  - [ ] Status 200, accepts `order` query, e.g. `?order=desc`
-  - [ ] Status 200, accepts `category` query, e.g. `?category=dexterity`
-  - [ ] Status 400. invalid `sort_by` query, e.g. `?sort_by=bananas`
-  - [ ] Status 400. invalid `order` query, e.g. `?order=bananas`
-  - [ ] Status 404. non-existent `category` query, e.g. `?category=bananas`
-  - [ ] Status 200. valid `category` query, but has no reviews responds with an empty array of reviews, e.g. `?category=children's games`
+  - [✓] Status 200, accepts `sort_by` query, e.g. `?sort_by=votes`
+  - [✓] Status 200, accepts `order` query, e.g. `?order=desc`
+  - [✓] Status 200, accepts `category` query, e.g. `?category=dexterity`
+  - [✓] Status 400. invalid `sort_by` query, e.g. `?sort_by=bananas`
+  - [✓] Status 400. invalid `order` query, e.g. `?order=bananas`
+  - [✓] Status 404. non-existent `category` query, e.g. `?category=bananas`
+  - [✓] Status 200. valid `category` query, but has no reviews responds with an empty array of reviews, e.g. `?category=children's games`
 
 - `GET /api/reviews/:review_id/comments`
 
