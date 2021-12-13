@@ -7,12 +7,7 @@ const toBeSortedBy = require("jest-sorted");
 
 beforeEach(() => seed(testData));
 afterAll(() => {
-  return db
-    .query(`SELECT title FROM reviews ORDER BY title ASC;`)
-    .then((response) => {
-      console.log(response.rows, "<<<<<<<<");
-      return db.end();
-    });
+  return db.end();
 });
 
 describe("/api/categories", () => {
@@ -54,22 +49,6 @@ describe("/api/reviews/:review_id", () => {
             comment_count: "0",
           })
         );
-      });
-  });
-  it("status 404: returns an error when an review_id doesn't exist", () => {
-    return request(app)
-      .get("/api/reviews/10900")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, review_id not found!" });
-      });
-  });
-  it("status 400: returns an error when an invalid review_id format is input", () => {
-    return request(app)
-      .get("/api/reviews/dogs")
-      .expect(400)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, id not a valid input!" });
       });
   });
   it("status 204: returns the updated review when a valid review is input via patch", () => {
@@ -221,22 +200,6 @@ describe("/api/reviews/?query", () => {
         );
       });
   });
-  it("status 404: returns an error when an review_id doesn't exist", () => {
-    return request(app)
-      .get("/api/reviews/450")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, review_id not found!" });
-      });
-  });
-  it("status 400: returns an error when an invalid review_id format is input", () => {
-    return request(app)
-      .get("/api/reviews/dogs")
-      .expect(400)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, id not a valid input!" });
-      });
-  });
 });
 
 describe("/api/reviews/:review_id/comments", () => {
@@ -295,53 +258,11 @@ describe("/api/reviews/:review_id/comments", () => {
         );
       });
   });
-  it("status 400: returns an error if invalid username is provided", () => {
-    return request(app)
-      .post("/api/reviews/2/comments")
-      .send({ username: "markeywarkey", body: "I really loved this game!" })
-      .expect(400)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, bad data!" });
-      });
-  });
-  it("status 400: returns an error if empty post request made", () => {
-    return request(app)
-      .post("/api/reviews/2/comments")
-      .send({})
-      .expect(400)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, bad data!" });
-      });
-  });
-  it("status 400: returns an error when an review_id doesn't exist", () => {
-    return request(app)
-      .post("/api/reviews/19000/comments")
-      .expect(400)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, bad data!" });
-      });
-  });
-  it("status 400: returns an error when an invalid review_id format is input", () => {
-    return request(app)
-      .post("/api/reviews/dogs/comments")
-      .expect(400)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, id not a valid input!" });
-      });
-  });
 });
 
 describe("/api/comments/:comment_id", () => {
   it("status 204: deletes a comment by comment Id", () => {
     return request(app).delete("/api/comments/1").expect(204);
-  });
-  it("status 404: returns an error when an invalid comment format is input", () => {
-    return request(app)
-      .delete("/api/comments/dogs")
-      .expect(400)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: "Sorry, id not a valid input!" });
-      });
   });
 });
 
@@ -556,14 +477,6 @@ describe("/api/users", () => {
         });
       });
   });
-  it("status 400: returns an error as wrong address typed in", () => {
-    return request(app)
-      .get("/api/user")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body).toEqual({});
-      });
-  });
 });
 
 describe("/api/users/:username", () => {
@@ -581,26 +494,6 @@ describe("/api/users/:username", () => {
               username: "mallionaire",
             },
           ],
-        });
-      });
-  });
-  it("status 404: returns an error of invalid user id", () => {
-    return request(app)
-      .get("/api/users/markeywarkey")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body).toEqual({
-          msg: "Sorry, username not found!",
-        });
-      });
-  });
-  it("status 400: returns an error of username invalid format", () => {
-    return request(app)
-      .get("/api/users/true")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body).toEqual({
-          msg: "Sorry, username not found!",
         });
       });
   });
@@ -624,6 +517,95 @@ describe("/api/comments/:comment_id", () => {
               votes: 16,
             },
           ],
+        });
+      });
+  });
+});
+
+describe("error handling testing", () => {
+  it("status 404: returns an error when an review_id doesn't exist", () => {
+    return request(app)
+      .get("/api/reviews/10900")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Sorry, review_id not found!" });
+      });
+  });
+  it("status 400: returns an error when an invalid review_id format is input", () => {
+    return request(app)
+      .get("/api/reviews/dogs")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Sorry, id not a valid input!" });
+      });
+  });
+  it("status 400: returns an error if invalid username is provided", () => {
+    return request(app)
+      .post("/api/reviews/2/comments")
+      .send({ username: "markeywarkey", body: "I really loved this game!" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Sorry, bad data!" });
+      });
+  });
+  it("status 400: returns an error if empty post request made", () => {
+    return request(app)
+      .post("/api/reviews/2/comments")
+      .send({})
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Sorry, bad data!" });
+      });
+  });
+  it("status 400: returns an error when an review_id doesn't exist", () => {
+    return request(app)
+      .post("/api/reviews/19000/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Sorry, bad data!" });
+      });
+  });
+  it("status 400: returns an error when an invalid review_id format is input", () => {
+    return request(app)
+      .post("/api/reviews/dogs/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Sorry, id not a valid input!" });
+      });
+  });
+  it("status 400: returns an error as wrong address typed in", () => {
+    return request(app)
+      .get("/api/user")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body).toEqual({});
+      });
+  });
+  it("status 404: returns an error when an invalid comment format is input", () => {
+    return request(app)
+      .delete("/api/comments/dogs")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Sorry, id not a valid input!" });
+      });
+  });
+  it("status 404: returns an error of invalid user id", () => {
+    return request(app)
+      .get("/api/users/markeywarkey")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body).toEqual({
+          msg: "Sorry, username not found!",
+        });
+      });
+  });
+  it("status 400: returns an error of username invalid format", () => {
+    return request(app)
+      .get("/api/users/true")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body).toEqual({
+          msg: "Sorry, username not found!",
         });
       });
   });

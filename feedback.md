@@ -7,12 +7,12 @@ Generally things are good, and you are failing very few of our tests. BUT you ar
 - [✓] Link to hosted version
 - [✓] Write a summary of what the project is
 - [✓] Provide clear instructions of how to clone, install dependencies, seed local database, and run tests
-- [ ] Include information about how to create `.env.test` and `.env.development` files
+- [✓] Include information about how to create `.env.test` and `.env.development` files
 - [✓] Specify minimum versions of `Node.js` and `Postgres` needed to run the project
 
 ## General
 
-- [ ] Remove any unnecessary `console.logs` and comments
+- [✓] Remove any unnecessary `console.logs` and comments
 - [✓] Remove all unnecessary files (e.g. old `README.md`, `error-handling.md`, `hosting.md`, `./db/utils/README.md` etc.)
 - [✓] Functions and variables have descriptive names
 
@@ -31,7 +31,7 @@ Generally things are good, and you are failing very few of our tests. BUT you ar
 - [✓] Seeding before each test
 - [✓] Descriptive `it`/`test` block descriptions
 - [✓] If asserting inside a `forEach`, also has an assertion to check length is at least > 0
-- [ ] Evidence of building up complex query endpoints using TDD
+- [ ? ] Evidence of building up complex query endpoints using TDD
 - [✓] Ensure all tests are passing
 - [ ] Cover all endpoints and errors
 
