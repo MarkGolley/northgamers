@@ -306,18 +306,20 @@ Responds with:
 
 ### _Even more_ endpoints/tasks
 
-#### Adding pagination to GET /api/reviews
+COMPLETE - #### Adding pagination to GET /api/reviews
 
 > To make sure that an API can handle large amounts of data, it is often necessary to use **pagination**. Head over to [Google](https://www.google.co.uk/search?q=cute+puppies), and you will notice that the search results are broken down into pages. It would not be feasible to serve up _all_ the results of a search in one go. The same is true of websites / apps like Facebook or Twitter (except they hide this by making requests for the next page in the background, when we scroll to the bottom of the browser). We can implement this functionality on our `/api/reviews` and `/api/comments` endpoints.
 
 - Should accepts the following queries:
+
   - `limit`, which limits the number of responses (defaults to 10)
   - `p`, stands for page which specifies the page at which to start (calculated using limit)
+
 - add a `total_count` property, displaying the total number of reviews (**this should display the total number of reviews with any filters applied, discounting the limit**)
 
 ---
 
-#### Adding pagination to GET /api/reviews/:review_id/comments
+COMPLETE - #### Adding pagination to GET /api/reviews/:review_id/comments
 
 Should accept the following queries:
 
@@ -328,7 +330,7 @@ Should accept the following queries:
 
 #### POST /api/reviews
 
-Request body accepts:
+Request body accepts;
 
 - an object with the following properties:
 

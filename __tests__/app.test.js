@@ -216,6 +216,7 @@ describe("/api/reviews/?query", () => {
               "https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg",
             title: "Settlers of Catan: Don't Settle For Less",
             votes: 16,
+            total_count: "3",
           })
         );
       });
@@ -241,7 +242,7 @@ describe("/api/reviews/?query", () => {
 describe("/api/reviews/:review_id/comments", () => {
   it("status 200: returns with an object of the specific review data", () => {
     return request(app)
-      .get("/api/reviews/2/comments")
+      .get("/api/reviews/1/comments")
       .expect(200)
       .then(({ body }) => {
         expect(body.comments.length).toBe(3);
@@ -251,6 +252,7 @@ describe("/api/reviews/:review_id/comments", () => {
             body: "I loved this game too!",
             comment_id: 1,
             created_at: "2017-11-22T12:43:33.389Z",
+            total_count: "-4",
             votes: 16,
           },
           {
@@ -258,6 +260,7 @@ describe("/api/reviews/:review_id/comments", () => {
             body: "EPIC board game!",
             comment_id: 4,
             created_at: "2017-11-22T12:36:03.389Z",
+            total_count: "-4",
             votes: 16,
           },
           {
@@ -265,6 +268,7 @@ describe("/api/reviews/:review_id/comments", () => {
             body: "Now this is a story all about how, board games turned my life upside down",
             comment_id: 5,
             created_at: "2021-01-18T10:24:05.410Z",
+            total_count: "-4",
             votes: 13,
           }
         );

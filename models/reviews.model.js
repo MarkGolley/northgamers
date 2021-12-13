@@ -40,7 +40,8 @@ exports.updateReviewById = (review_id, body) => {
 exports.fetchReviews = (sort_by, order_by, category, limit, p) => {
   let queryStr = `SELECT owner, title, review_id, category, 
   review_img_url, created_at, votes, 
-  (SELECT COUNT(*) FROM comments WHERE comments.review_id=reviews.review_id) AS comment_count 
+  (SELECT COUNT(*) FROM comments WHERE comments.review_id=reviews.review_id) AS comment_count,
+  (SELECT COUNT(*) FROM reviews)-(${limit}) AS total_count
   FROM reviews`;
 
   if (
@@ -87,18 +88,16 @@ exports.fetchReviews = (sort_by, order_by, category, limit, p) => {
   });
 };
 
-exports.selectReviewCommentsById = (review_id) => {
-  return db
-    .query(
-      `SELECT comment_id, votes, created_at, author, body
+exports.selectReviewCommentsById = (review_id, limit, p) => {
+  let queryStr = `SELECT comment_id, votes, created_at, author, body,
+  (SELECT COUNT(*) FROM comments)-(${limit}) AS total_count
   FROM comments
-  WHERE review_id = $1;
-  `,
-      [review_id]
-    )
-    .then((response) => {
-      return response.rows;
-    });
+  WHERE review_id = 2
+  LIMIT ${limit} OFFSET ${p * limit};`;
+
+  return db.query(queryStr).then((response) => {
+    return response.rows;
+  });
 };
 
 exports.newCommentOnReviewById = (review_id, body, username) => {
