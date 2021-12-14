@@ -26,33 +26,53 @@ describe("/api/categories", () => {
         expect(Array.isArray(body.categories)).toBe(true);
       });
   });
+  it("status 201: returns with an object of the newly added category", () => {
+    return request(app)
+      .post("/api/categories")
+      .send({
+        slug: "comedy",
+        description: "a funny old game",
+      })
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.category.length).toBe(1);
+        expect(body.category[0]).toEqual({
+          slug: "comedy",
+          description: "a funny old game",
+        });
+      });
+  });
 });
 
 describe("/api/reviews", () => {
-  it.only("status 201: returns with array object of the newly added review", () => {
+  it("status 201: returns with array object of the newly added review", () => {
     return request(app)
       .post("/api/reviews")
       .send({
         owner: "bainesface",
         title: "I loved this game",
-        review_body: "OMG what a game!!",
-        designer: "Mr Game O'Game",
+        review_body: "OMG what a game",
+        designer: "Mr Game Game",
         category: "dexterity",
       })
       .expect(201)
       .then(({ body }) => {
-        expect(body.categories.length).toBe(1);
-        expect(body.categories[0]).toEqual({
-          owner: "bainesface",
-          title: "I loved this game",
-          review_body: "OMG what a game!!",
-          review_id: 10,
-          designer: "Mr Game O'Game",
-          category: "dexterity",
-          votes: 0,
-          created_at: 100,
-          comment_count: 1,
-        });
+        expect(body.review.length).toBe(1);
+        expect(body.review[0]).toEqual(
+          expect.objectContaining({
+            owner: "bainesface",
+            title: "I loved this game",
+            review_body: "OMG what a game",
+            review_id: 14,
+            review_img_url:
+              "https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg",
+            designer: "Mr Game Game",
+            category: "dexterity",
+            votes: 0,
+            created_at: expect.any(String),
+            comment_count: "0",
+          })
+        );
       });
   });
 });

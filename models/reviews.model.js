@@ -122,12 +122,11 @@ exports.addReview = (owner, title, review_body, designer, category) => {
   return db
     .query(
       `INSERT INTO reviews (owner, title, review_body, designer, category)
-  VALUES ($1,$2,$2,$4,$5)
-  RETURNING *;`,
+  VALUES ($1,$2,$3,$4,$5)
+  RETURNING *,(SELECT COUNT(*) FROM comments WHERE comments.review_id=reviews.review_id) AS comment_count;`,
       [owner, title, review_body, designer, category]
     )
     .then((response) => {
-      console.log(response);
       return response.rows;
     });
 };

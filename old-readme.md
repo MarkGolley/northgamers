@@ -328,7 +328,7 @@ Should accept the following queries:
 
 ---
 
-#### POST /api/reviews
+COMPLETE - #### POST /api/reviews
 
 Request body accepts;
 
@@ -348,7 +348,7 @@ Responds with:
   - `created_at`
   - `comment_count`
 
-#### POST /api/categories
+COMPLETE - #### POST /api/categories
 
 Request body accepts:
 
