@@ -122,6 +122,14 @@ describe("/api/reviews/:review_id", () => {
         );
       });
   });
+  it("status 204: deletes the review and returns nothing", () => {
+    return request(app)
+      .delete("/api/reviews/1")
+      .expect(204)
+      .then(({ body }) => {
+        expect(body).toEqual({});
+      });
+  });
 });
 
 describe("/api/reviews/?query", () => {

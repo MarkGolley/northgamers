@@ -5,6 +5,7 @@ const {
   selectReviewCommentsById,
   newCommentOnReviewById,
   addReview,
+  removeReviewById,
 } = require("../models/reviews.model");
 
 const {
@@ -109,6 +110,17 @@ exports.postReview = (req, res, next) => {
   ])
     .then((review) => {
       res.status(201).send({ review: review[0] });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.deleteReviewById = (req, res, next) => {
+  const { review_id } = req.params;
+  removeReviewById(review_id)
+    .then((response) => {
+      res.status(204).send({});
     })
     .catch((err) => {
       next(err);

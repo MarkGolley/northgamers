@@ -130,3 +130,17 @@ exports.addReview = (owner, title, review_body, designer, category) => {
       return response.rows;
     });
 };
+
+exports.removeReviewById = (review_id) => {
+  return db
+    .query(
+      `DELETE FROM reviews
+  WHERE review_id = $1
+  RETURNING *;`,
+      [review_id]
+    )
+    .then((response) => {
+      console.log("deleted", response);
+      return response.rows;
+    });
+};
