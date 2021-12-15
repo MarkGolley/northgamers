@@ -365,7 +365,7 @@ Responds with:
 
 - a category object containing the newly added category
 
-#### DELETE /api/reviews/:review_id
+COMPLETE - #### DELETE /api/reviews/:review_id
 
 Should:
 

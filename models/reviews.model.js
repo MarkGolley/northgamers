@@ -140,7 +140,6 @@ exports.removeReviewById = (review_id) => {
       [review_id]
     )
     .then((response) => {
-      console.log("deleted", response);
       return response.rows;
     });
 };

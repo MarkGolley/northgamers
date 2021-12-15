@@ -466,6 +466,20 @@ describe("/api", () => {
                 ],
               },
             },
+            "POST /api/categories": {
+              description: "posts a new category",
+              body: { slug: "xxx", description: "xxx" },
+              queries: [],
+              exampleResponse: {
+                categories: [
+                  {
+                    description:
+                      "Players attempt to uncover each other's hidden role",
+                    slug: "Social deduction",
+                  },
+                ],
+              },
+            },
             "GET /api/reviews": {
               description: "serves an array of all reviews",
               queries: ["category", "sort_by", "order"],
@@ -572,9 +586,51 @@ describe("/api", () => {
                 ],
               },
             },
+            "POST /api/reviews": {
+              description: "post a new review",
+              queries: [],
+              exampleResponse: {
+                review: [
+                  {
+                    owner: "mallionaire",
+                    title: "Agricola",
+                    review_id: 1,
+                    review_body: "Farmyard fun!",
+                    designer: "Uwe Rosenberg",
+                    review_img_url:
+                      "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+                    category: "euro game",
+                    created_at: "2021-01-18T10:00:20.514Z",
+                    votes: 1,
+                    comment_count: "0",
+                  },
+                ],
+              },
+            },
+            "DELETE /api/reviews/:review_id": {
+              description: "delete a review by review_id",
+              queries: [],
+              exampleResponse: {},
+            },
             "DELETE /api/comments/:comment_id": {
               description: "delete a comment by comment_id",
               queries: [],
+            },
+            "PATCH /api/comments/comment_id": {
+              description:
+                "allows an update of the votes property to be made to a comment",
+              queries: [],
+              exampleResponse: {
+                "comment:": [
+                  {
+                    comment_id: "1",
+                    author: "Sample",
+                    review_id: 1,
+                    created_at: "2021-01-18T10:00:20.514Z",
+                    votes: 2,
+                  },
+                ],
+              },
             },
             "GET /api/users": {
               description: "returns all users in an array",

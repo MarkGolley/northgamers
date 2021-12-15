@@ -3,6 +3,11 @@ const app = express();
 app.use(express.json());
 
 const apiRouter = require("./routers/api.router");
+const {
+  handlePSQL400Errors,
+  handleCustomErrors,
+  handle500Errors,
+} = require("./errors/errors");
 
 app.use("/api", apiRouter);
 
@@ -10,18 +15,8 @@ app.get("/", (req, res, next) => {
   res.status(200).send({ msg: "Hello from the games api !" });
 });
 
-app.use((err, req, res, next) => {
-  if (err.code === "22P02") {
-    res.status(400).send({ msg: "Sorry, id not a valid input!" });
-  } else if (
-    err.code === "23503" ||
-    err.code === "23502" ||
-    err.code === "42703"
-  ) {
-    res.status(400).send({ msg: "Sorry, bad input data!" });
-  } else {
-    res.status(err.status).send({ msg: err.msg });
-  }
-});
+app.use(handlePSQL400Errors);
+app.use(handleCustomErrors);
+app.use(handle500Errors);
 
 module.exports = app;
