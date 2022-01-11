@@ -6,7 +6,13 @@ const {
 } = require("../utils/utils");
 
 exports.getUsers = (req, res, next) => {
-  selectUsers()
+  let { limit } = req.query;
+
+  if (!limit) {
+    limit = 10;
+  }
+
+  selectUsers(limit)
     .then((users) => {
       res.status(200).send({ users });
     })

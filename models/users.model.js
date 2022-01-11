@@ -1,7 +1,10 @@
 const db = require("../db/connection");
 
-exports.selectUsers = () => {
-  return db.query(`SELECT * FROM users;`).then((response) => {
+exports.selectUsers = (limit) => {
+  let queryStr = `SELECT * FROM users`;
+  queryStr += `\nLIMIT ${limit};`;
+
+  return db.query(queryStr).then((response) => {
     return response.rows;
   });
 };
