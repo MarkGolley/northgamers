@@ -12,12 +12,12 @@ const {
   deleteReviewById,
 } = require("../controllers/reviews.controller");
 
+reviewsRouter.route("/").get(getReviews).post(postReview);
 reviewsRouter
   .route("/:review_id")
   .get(getReviewById)
   .patch(patchReviewById)
   .delete(deleteReviewById);
-reviewsRouter.route("/").get(getReviews).post(postReview);
 reviewsRouter
   .route("/:review_id/comments")
   .get(getReviewComments)

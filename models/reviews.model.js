@@ -42,8 +42,9 @@ exports.fetchReviews = (sort_by, order_by, category, limit, p) => {
   review_img_url, reviews.created_at, reviews.votes,
   (SELECT COUNT(*) FROM reviews)-(${limit}) AS total_count,
   (SELECT COUNT(*) FROM comments WHERE comments.review_id=reviews.review_id) AS comment_count
-  FROM reviews
-  LEFT JOIN comments ON comments.review_id = reviews.review_id`;
+  FROM reviews`;
+
+  // removed --- LEFT JOIN comments ON comments.review_id = reviews.review_id
 
   if (
     ![
