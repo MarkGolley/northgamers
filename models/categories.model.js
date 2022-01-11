@@ -1,7 +1,10 @@
 const db = require("../db/connection");
 
-exports.selectCategories = () => {
-  return db.query(`SELECT * FROM categories;`).then((response) => {
+exports.selectCategories = (limit) => {
+  let queryStr = `SELECT * FROM categories`;
+  queryStr += `\nLIMIT ${limit};`;
+
+  return db.query(queryStr).then((response) => {
     return response.rows;
   });
 };

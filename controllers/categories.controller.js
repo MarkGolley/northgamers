@@ -1,7 +1,12 @@
 const { selectCategories, addCategory } = require("../models/categories.model");
 
 exports.getCategories = (req, res, next) => {
-  selectCategories()
+  let { limit } = req.query;
+  if (!limit) {
+    limit = 10;
+  }
+
+  selectCategories(limit)
     .then((categories) => {
       res.status(200).send({ categories });
     })
