@@ -210,7 +210,7 @@ describe("/api/reviews/?query", () => {
       .get("/api/reviews?category=dexterity")
       .expect(200)
       .then(({ body }) => {
-        expect(body.reviews.length).toBe(3);
+        expect(body.reviews.length).toBe(1);
         expect(body.reviews[0]).toEqual(
           expect.objectContaining({
             category: "dexterity",
@@ -293,7 +293,7 @@ describe("/api/reviews/?query", () => {
       .get("/api/reviews?sort_by=designer&&order_by=DESC&&category=dexterity")
       .expect(200)
       .then(({ body }) => {
-        expect(body.reviews.length).toBe(3);
+        expect(body.reviews.length).toBe(1);
         expect(body.reviews[0]).toEqual(
           expect.objectContaining({
             category: "dexterity",
@@ -316,7 +316,7 @@ describe("/api/reviews/?query", () => {
       )
       .expect(200)
       .then(({ body }) => {
-        expect(body.reviews.length).toBe(3);
+        expect(body.reviews.length).toBe(1);
         expect(body.reviews[0]).toEqual(
           expect.objectContaining({
             category: "dexterity",
